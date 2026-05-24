@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ikissyourheart</title>
+  <title>IKYH</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Ackbar';
+      src: url('Ackbar.ttf') format('truetype');
+    }
 
     body {
       background: #ffffff;
@@ -17,16 +22,30 @@
       font-family: sans-serif;
     }
 
-    .logo {
-      max-width: 420px;
-      width: 80%;
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0px;
       margin-bottom: 48px;
+    }
+
+    .logo-letter {
+      font-family: 'Ackbar', sans-serif;
+      font-size: 22vw;
+      font-weight: 900;
+      color: #1A1A18;
+      line-height: 1;
+      transition: color 0.15s ease;
+    }
+
+    .logo-letter.rot {
+      color: #E30613;
     }
 
     a.btn {
       display: inline-block;
       padding: 16px 40px;
-      background: #000;
+      background: #E30613;
       color: #fff;
       text-decoration: none;
       font-size: 1.1rem;
@@ -34,13 +53,83 @@
       transition: background 0.2s;
     }
 
-    a.btn:hover { background: #333; }
+    a.btn:hover { background: #1A1A18; }
+
+    footer {
+      position: fixed;
+      bottom: 20px;
+      font-size: 0.85rem;
+    }
+
+    footer a {
+      color: #999;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+
+    footer a:hover { color: #1A1A18; }
   </style>
 </head>
 <body>
-  <img class="logo" src="logo.png" alt="Logo">
+
+  <audio id="bg-music" loop preload="auto">
+    <source src="musik.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="logo-container">
+    <span class="logo-letter" id="l0">I</span>
+    <span class="logo-letter" id="l1">K</span>
+    <span class="logo-letter" id="l2">Y</span>
+    <span class="logo-letter" id="l3">H</span>
+  </div>
+
   <a class="btn" href="https://www.ebay.de/usr/ikissyourheart" target="_blank">
     eBay shop →
   </a>
+
+  <footer>
+    <a href="/impressum.html">Impressum</a> ·
+    <a href="/datenschutz.html">Datenschutz</a>
+  </footer>
+
+  <script>
+    // Logo Animation
+    const letters = document.querySelectorAll(".logo-letter");
+    let current = 1;
+
+    function randomAnderer(aktuell) {
+      let next;
+      do { next = Math.floor(Math.random() * letters.length); }
+      while (next === aktuell);
+      return next;
+    }
+
+    function animate() {
+      letters[current].classList.remove("rot");
+      current = randomAnderer(current);
+      letters[current].classList.add("rot");
+    }
+
+    letters[current].classList.add("rot");
+    setInterval(animate, 2000);
+
+    // Musik – robuster Start
+    const audio = document.getElementById("bg-music");
+    audio.volume = 0.4;
+
+    function startAudio() {
+      audio.play().then(() => {
+        document.removeEventListener("click", startAudio);
+        document.removeEventListener("touchstart", startAudio);
+        document.removeEventListener("keydown", startAudio);
+      }).catch(() => {});
+    }
+
+    document.addEventListener("click", startAudio);
+    document.addEventListener("touchstart", startAudio);
+    document.addEventListener("keydown", startAudio);
+  </script>
+
 </body>
 </html>
+
